@@ -51,42 +51,40 @@ public class SlideShow {
         int vertical = photos.length - horizontal;
         int slideLength = horizontal + (vertical / 2);
 
-
-        Slide[] photoSlides = new Slide[slideLength];
+        slides = new Slide[slideLength];
         for (int i = 0; i < slideLength; i++) {
             Slide slide = new Slide(Orientation.HORIZONTAL, photos[i], null, photos[i].tags);
-            photoSlides[i] = slide;
+            slides[i] = slide;
         }
-        slides = new Slide[slideLength];
-        slides[0] = photoSlides[0];
 
-        int threshE = (int) Math.ceil(slideLength / Math.exp(1));
         //solution
-        main:
-        for (int i = 0; i < slideLength - 1; i++) {
-            int threshIndex = threshE + i;
-            if (threshIndex > slideLength) {
-                threshIndex = slideLength;
+        int maxIterations = slides.length * 4;
+        int currentInterest = totalInterestScore();
+        for (int i = 0; i < maxIterations; i++) {
+            swap();
+            if(totalInterestScore() < currentInterest) {
+                reverseSwap();
             }
-
-            Slide thresh = photoSlides[i + 1];
-            int threshScore = photoSlides[i].interestScore(thresh);
-            for (int j = i + 1; j < threshIndex; j++) {
-                if (photoSlides[i].interestScore(photoSlides[j + 1]) > threshScore) {
-                    thresh = photoSlides[j + 1];
-                    threshScore = photoSlides[j].interestScore(photoSlides[j + 1]);
-                }
-            }
-
-            for (int j = threshIndex; j < slideLength; j++) {
-                if (photoSlides[i].interestScore(photoSlides[j + 1]) >= threshScore) {
-                    slides[i + 1] = photoSlides[j + 1];
-                    continue main;
-                }
-            }
-            slides[i + 1] = thresh;
         }
         writeSolution();
+    }
+
+    static int index1;
+    static int index2;
+
+    public static void swap() {
+        index1 = (int) (Math.random() * slides.length);
+        index2 = (int) (Math.random() * slides.length);
+
+        Slide temp = slides[index1];
+        slides[index1] = slides[index2];
+        slides[index2] = slides[index1];
+    }
+
+    public static void reverseSwap() {
+        Slide temp = slides[index1];
+        slides[index1] = slides[index2];
+        slides[index2] = slides[index1];
     }
 
     //IO stuff
