@@ -9,8 +9,8 @@ public class Slide {
     Set<String> tags;
 
     public Slide(Orientation orient, Photo photo1, Photo photo2, Set<String> tags) {
-        if (orient.equals(Orientation.VERTICAL) && photo2 != null) {
-            throw new RuntimeException("Vertical photos only have 1 photo");
+        if (orient.equals(Orientation.VERTICAL) && photo2 == null) {
+            throw new RuntimeException("Vertical photos should have 2 photos");
         }
 
         this.orient = orient;

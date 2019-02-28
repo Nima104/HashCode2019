@@ -17,7 +17,7 @@ public class SlideShow {
         return sum;
     }
 
-    public static final String filename = "";
+    public static final String filename = "a_example";
 
     public static void main(String[] args) throws IOException {
         //initialization of photos
